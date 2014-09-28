@@ -15,14 +15,20 @@ class Particle():
 		self.height = size
 		self.age = lifespan
 
+		self.surface = pygame.Surface((self.width, self.height))
+		self.surface.fill((0,0,0))
+		self.surface.set_alpha(255)
+		self.alpha_mod = (254 / lifespan)
+
 	def update(self):
 		self.x += self.x_v
 		self.y += self.y_v
 		self.age -= 1
 		if(self.age <= 0): self.kill()
+		self.surface.set_alpha(self.surface.get_alpha() - self.alpha_mod)
 
 	def draw(self):
-		pygame.draw.rect(globals.window, (0,0,0), (self.x, self.y, self.width, self.height), 0)
+		globals.window.blit(self.surface, (self.x, self.y))
 
 	def kill(self):
 		globals.entities.remove(self)
